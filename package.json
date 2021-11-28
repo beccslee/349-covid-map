@@ -83,7 +83,7 @@
   "lint-staged": {
     "**/*.js": [
       "yarn format:nopath",
-      "yarn lint"
+      "yarn lint" 
     ]
   },
   "homepage": "https://github.com/beccslee/349-covid-map",
