@@ -4,11 +4,14 @@
   "description": "A Gatsby starter with Leafet!",
   "version": "0.3.0",
   "author": {
-    "name": "Colby Fayock",
-    "email": "hello@colbyfayock.com",
-    "url": "https://twitter.com/colbyfayock"
+    "name": "Team Barry",
+    "email": "slandaas1@csu.fullerton.edu",
+    "url": "https://github.com/beccslee/349-covid-map"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-regular-svg-icons": "^5.15.4",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "axios": "^0.24.0",
     "gatsby": "^3.14.6",
     "gatsby-plugin-manifest": "^3.5.0",
@@ -83,12 +86,12 @@
       "yarn lint"
     ]
   },
-  "homepage": "https://gatsby-starter-leaflet.netlify.app/",
+  "homepage": "https://github.com/beccslee/349-covid-map",
   "repository": {
     "type": "git",
-    "url": "https://github.com/colbyfayock/gatsby-starter-leaflet"
+    "url": "https://github.com/beccslee/349-covid-map"
   },
   "bugs": {
-    "url": "https://github.com/colbyfayock/gatsby-starter-leaflet/issues"
+    "url": "https://github.com/beccslee/349-covid-map"
   }
 }
