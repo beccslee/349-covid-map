@@ -13,7 +13,7 @@ const Header = () => {
         </p>
         <ul>
           <li>
-            <Link to="/about/">References</Link>
+            <Link to="/about/">About</Link>
           </li>
         </ul>
       </div>
