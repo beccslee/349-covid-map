@@ -8,6 +8,8 @@ import Layout from "components/Layout";
 import Container from "components/Container";
 import Map from "components/Map";
 import Snippet from "components/Snippet";
+import Header from "components/Header";
+import "assets/stylesheets/application.scss";
 
 const LOCATION = {
   lat: 0,
@@ -137,20 +139,67 @@ const IndexPage = () => {
   };
 
   return (
-    <Layout pageName="home">
-      <Helmet>
-        <title>Team Barry COVID Dashboard</title>
-      </Helmet>
-
-      <Map {...mapSettings}>
-        <MapEffect markerRef={markerRef} />
-        <Marker ref={markerRef} position={CENTER} />
-      </Map>
-
-      <div className="graphsContainer">
-        <h2>Graphs</h2>
+    <div className="mainPageContainer">
+      <div className="headerFix">
+        <Header />
       </div>
-    </Layout>
+      <div className="mainPageModules">
+        <div className="test">
+          <h2>Confirmed</h2>
+          <p>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magnam,
+            illum.
+          </p>
+        </div>
+
+        <div className="test">
+          <h2>Active</h2>
+          <p>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magnam,
+            illum.
+          </p>
+        </div>
+
+        <div className="testMapContainer">
+          <Map {...mapSettings}>
+            <MapEffect markerRef={markerRef} />
+            <Marker ref={markerRef} position={CENTER} />
+          </Map>
+          <div className="graphContainer">
+            <div className="test">
+              <h3>Graph #1</h3>
+              <p>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit.Lorem
+                ipsum dolor sit, amet consectetur adipisicing elit.
+              </p>
+            </div>
+            <div className="test">
+              <h3>Graph #2</h3>
+              <p>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit.Lorem
+                ipsum dolor sit, amet consectetur adipisicing elit.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="test">
+          <h2>Recovered</h2>
+          <p>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magnam,
+            illum.
+          </p>
+        </div>
+
+        <div className="test">
+          <h2>Deaths</h2>
+          <p>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magnam,
+            illum.
+          </p>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "gatsby";
 import { FaGithub } from "react-icons/fa";
 import { useSiteMetadata } from "hooks";
+import "assets/stylesheets/components/_header.scss";
 const Header = () => {
   const { companyName, companyUrl } = useSiteMetadata();
 

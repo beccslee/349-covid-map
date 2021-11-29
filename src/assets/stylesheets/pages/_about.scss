@@ -2,9 +2,9 @@
 //  font-family: "Roboto", sans-serif;
 
 body {
-  background: linear-gradient(-45deg, #686868, #333333, #111111, #000000);
+  background: linear-gradient(-45deg, #260281, #070042, #000729, #000000);
   background-size: 400% 400%;
-  animation: gradient 25s ease infinite;
+  animation: gradient 15s ease infinite;
   height: 100vh;
   font-family: "Roboto", sans-serif;
 }
@@ -17,12 +17,13 @@ body {
 }
 
 .contentBlock {
-  background: rgb(0, 0, 0);
-  border-radius: 50px;
+  background: rgba(0, 0, 0, 0.479);
   margin: 2em;
   padding: 1em;
   width: 60%;
   text-align: center;
+  border: medium dashed;
+  border-image: linear-gradient(45deg, turquoise, #5011ec) 1;
 }
 
 .link {
@@ -31,7 +32,7 @@ body {
 }
 
 .link:hover {
-  color: yellow;
+  color: rgb(255, 1, 255);
 }
 
 @keyframes gradient {
