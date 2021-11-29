@@ -40,7 +40,7 @@ main {
   height: 95vh;
 }
 
-.test {
+.tableModule, .graphModule {
   border: medium dashed;
   background: rgba(117, 117, 117, 0.185);
   margin: 0.4em;
@@ -48,7 +48,7 @@ main {
 }
 
 .testMapContainer {
-  margin-top: 0.4em;
+  margin: 0.5em 0;
   height: 60%;
   width: 100%;
 }

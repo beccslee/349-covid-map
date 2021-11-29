@@ -104,3 +104,24 @@
     margin: .6em 0 0;
   }
 }
+
+img.leaflet-marker-icon {
+  filter: hue-rotate(0deg);
+  display: none;
+}
+
+.leaflet-tile {
+  filter: grayscale(20%);
+}
+
+.icon-marker {
+  background-color: #8a0000;
+}
+
+.icon-marker:hover, .icon-marker:active {
+  background-color: #630000;
+}
+
+.leaflet-control-attribution {
+  display: none;
+}

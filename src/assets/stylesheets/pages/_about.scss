@@ -26,9 +26,14 @@ body {
   border-image: linear-gradient(45deg, turquoise, #5011ec) 1;
 }
 
+.contentBlock p {
+  font-size: 1.1rem;
+}
+
 .link {
   text-decoration: none;
   color: white;
+  font-weight: 700;
 }
 
 .link:hover {

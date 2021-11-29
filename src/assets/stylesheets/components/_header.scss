@@ -1,9 +1,10 @@
 header {
   width: 100%;
   color: #936afa;
-  background-color: #000000;
+  background-color: #080808;
   justify-content: center;
   display: flex;
+  font-family: sans-serif;
 
   ul,
   li,
@@ -46,4 +47,13 @@ header {
 
 .headerContent li:hover {
   text-decoration: underline;
+}
+
+.virLogo {
+  animation: spin linear 10s infinite;
+}
+
+@keyframes spin {
+  from {transform: rotate(0deg);}
+  to {transform: rotate(360deg);}
 }

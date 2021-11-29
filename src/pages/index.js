@@ -144,7 +144,7 @@ const IndexPage = () => {
         <Header />
       </div>
       <div className="mainPageModules">
-        <div className="test">
+        <div className="tableModule">
           <h2>Confirmed</h2>
           <p>
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magnam,
@@ -152,7 +152,7 @@ const IndexPage = () => {
           </p>
         </div>
 
-        <div className="test">
+        <div className="tableModule">
           <h2>Active</h2>
           <p>
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magnam,
@@ -166,14 +166,14 @@ const IndexPage = () => {
             <Marker ref={markerRef} position={CENTER} />
           </Map>
           <div className="graphContainer">
-            <div className="test">
+            <div className="graphModule">
               <h3>Graph #1</h3>
               <p>
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit.Lorem
                 ipsum dolor sit, amet consectetur adipisicing elit.
               </p>
             </div>
-            <div className="test">
+            <div className="graphModule">
               <h3>Graph #2</h3>
               <p>
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit.Lorem
@@ -183,7 +183,7 @@ const IndexPage = () => {
           </div>
         </div>
 
-        <div className="test">
+        <div className="tableModule">
           <h2>Recovered</h2>
           <p>
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magnam,
@@ -191,7 +191,7 @@ const IndexPage = () => {
           </p>
         </div>
 
-        <div className="test">
+        <div className="tableModule">
           <h2>Deaths</h2>
           <p>
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magnam,

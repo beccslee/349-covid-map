@@ -16,11 +16,11 @@ const SecondPage = () => {
     <div className="aboutContainer">
       <Header />
       <div className="contentBlock">
-        <h1>About Us & References</h1>
+        <h1>About Us &#38; References</h1>
       </div>
       <div className="contentBlock">
-        <h1>The Team</h1>
-        <p>Stephen Landaas ~ Team Leader</p>
+        <h1>Meet The Team</h1>
+        <p>Stephen Landaas - Team Leader, UI Design, Leaflet edits, JSX, CSS</p>
         <p>Rebecca Lee ~ Lorem</p>
         <p>Ethan Kamus ~ Lorem</p>
         <p>Ali Hussain ~ Lorem</p>
