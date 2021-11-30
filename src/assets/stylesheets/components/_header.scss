@@ -51,6 +51,11 @@ header {
 
 .virLogo {
   animation: spin linear 10s infinite;
+  font-size: 1.6rem;
+}
+
+.teamName:hover, .teamName:focus {
+  filter: brightness(0.9);
 }
 
 @keyframes spin {
