@@ -3,6 +3,7 @@ import L from "leaflet";
 import { Marker, useMap } from "react-leaflet";
 import Map from "components/Map";
 import Header from "components/Header";
+import BasicTable from "components/BasicTable";
 import axios from "axios";
 import "assets/stylesheets/application.scss";
 
@@ -189,18 +190,12 @@ const IndexPage = () => {
       <div className="mainPageModules">
         <div className="tableModule">
           <h2>Confirmed</h2>
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magnam,
-            illum.
-          </p>
+          <BasicTable />
         </div>
 
         <div className="tableModule">
           <h2>Active</h2>
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magnam,
-            illum.
-          </p>
+          <BasicTable />
         </div>
 
         <div className="testMapContainer">
@@ -228,18 +223,12 @@ const IndexPage = () => {
 
         <div className="tableModule">
           <h2>Recovered</h2>
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magnam,
-            illum.
-          </p>
+          <BasicTable />
         </div>
 
         <div className="tableModule">
           <h2>Deaths</h2>
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magnam,
-            illum.
-          </p>
+          <BasicTable />
         </div>
       </div>
     </div>
