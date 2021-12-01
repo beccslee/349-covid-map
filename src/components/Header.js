@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "gatsby";
-import { FaAtlas, FaGithub, FaVirus } from "react-icons/fa";
+import { FaVirus } from "react-icons/fa";
 import { useSiteMetadata } from "hooks";
 import "assets/stylesheets/components/_header.scss";
 const Header = () => {

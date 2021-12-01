@@ -1,10 +1,5 @@
 import React from "react";
-import { Helmet } from "react-helmet";
-
 import { useSiteMetadata } from "hooks";
-
-import Layout from "components/Layout";
-import Container from "components/Container";
 import "assets/stylesheets/pages/_about.scss";
 import Header from "components/Header";
 
