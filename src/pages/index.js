@@ -41,6 +41,7 @@ let getCountries;
       let provinces = getProvinces?.data;
       provinces = provinces.filter(elem => elem.province);
       console.log(provinces);
+      console.log(countries);
       const hasData = Array.isArray(countries) && Array.isArray(provinces) && countries.length > 0 && provinces.length > 0;
       
       if (!hasData) return;

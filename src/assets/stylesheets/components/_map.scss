@@ -140,7 +140,7 @@ img.leaflet-marker-icon {
 }
 
 .small-icon-marker {
-  background-color: #2437e0;
+  background-color: rgba(rgb(134, 19, 187), 0.75);
 }
 
 .icon-marker:hover, .icon-marker:active {
@@ -148,7 +148,7 @@ img.leaflet-marker-icon {
 }
 
 .small-icon-marker:hover, .small-icon-marker:active {
-  background-color: #05149e;
+  background-color: rgba(rgb(79, 0, 116), 0.85);
 }
 
 .leaflet-control-attribution {
