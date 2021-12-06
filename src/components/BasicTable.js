@@ -19,7 +19,9 @@ const rows = [
   createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
 
-const BasicTable = () => {
+const BasicTable = (props) => {
+  const { data } = props; //receive data
+  // console.log(JSON.stringify(data));  
   return(
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 50 }} size="small" aria-label="simple table">

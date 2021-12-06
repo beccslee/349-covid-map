@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import L from "leaflet";
 import { Marker, useMap } from "react-leaflet";
 import Map from "components/Map";
@@ -13,18 +13,23 @@ const LOCATION = {
 };
 const CENTER = [LOCATION.lat, LOCATION.lng];
 const DEFAULT_ZOOM = 2;
-let getCountries;
+// let getCountries;
+// let geoJsonCountries;
+// let geoJsonProvinces;
 
 /**
  * MapEffect
  * @description This is an example of creating an effect used to zoom in and set a popup on load
  */
- const MapEffect = ({ markerRef }) => {
+const MapEffect = ({ markerRef  }) => {
+
+  console.log("map");
   const map = useMap();
   
+  let getCountries;
+  let getProvinces;
+
   useEffect(() => {
-    // let getCountries;
-    let getProvinces;
     if (!markerRef.current || !map) return;
     
     (async function run() {
@@ -37,13 +42,13 @@ let getCountries;
         return;
       }
       
-      console.log(getProvinces);
+      // console.log(getProvinces);
       const countries = getCountries?.data;
       let provinces = getProvinces?.data;
       provinces = provinces.filter(elem => elem.province);
-      console.log(provinces);
+      // console.log(provinces);
       const hasData = Array.isArray(countries) && Array.isArray(provinces) && countries.length > 0 && provinces.length > 0;
-      
+    
       if (!hasData) return;
       
       const geoJsonCountries = {
@@ -63,7 +68,7 @@ let getCountries;
           };
         }),
       };
-      
+
       const geoJsonProvinces = {
         type: "FeatureCollection",
         features: provinces.map((elem) => {
@@ -81,7 +86,7 @@ let getCountries;
           };
         }),
       };
-      
+      // console.log(geoJsonCountries); 
       const geoJsonCountryLayer = new L.GeoJSON(geoJsonCountries, {
         pointToLayer: (feature = {}, latlng) => {
           const { properties = {} } = feature;
@@ -113,7 +118,7 @@ let getCountries;
               </span>
               ${casesString}
             </span>
-          `;
+          `;      
           
           return L.marker(latlng, {
             icon: L.divIcon({
@@ -174,13 +179,91 @@ let getCountries;
 };
 
 const IndexPage = () => {
+  console.log("index");
   const markerRef = useRef();
+  const [ourData, setOurData] = useState(false);
 
+  let getCountries;
+  let getProvinces;
+  
+  const [ geoJsonCountries, setGeoJsonCountries ] = useState([]);
+  const [ geoJsonProvinces, setGeoJsonProvinces ] = useState([]);
+  
   const mapSettings = {
     center: CENTER,
     defaultBaseMap: "OpenStreetMap",
     zoom: DEFAULT_ZOOM,
   };
+  
+  console.log("text");
+  console.log(ourData);
+  if (geoJsonCountries?.length > 0 && geoJsonProvinces?.length > 0){
+    setOurData(true);
+    // console.log(getCountries);
+    // console.log(getProvinces);
+  }
+  useEffect(() => {
+    (async function run() {
+      try {
+        getCountries = await axios.get("https://corona.lmao.ninja/v2/countries");
+        // API call to get fetch data for provinces in a country
+        getProvinces = await axios.get("https://disease.sh/v3/covid-19/jhucsse");
+      } catch (e) {
+        console.log(`failed to fetch countries: ${e.message}`);
+        return;
+      }
+      
+      const countries = getCountries?.data;
+      let provinces = getProvinces?.data;
+      provinces = provinces.filter(elem => elem.province);
+      // console.log(provinces);
+      const hasData = Array.isArray(countries) && Array.isArray(provinces) && countries.length > 0 && provinces.length > 0;
+      
+      if (!hasData) return;
+      
+      const c = {
+        type: "FeatureCollection",
+        features: countries.map((country = {}) => {
+          const { countryInfo = {} } = country;
+          const { lat, long: lng } = countryInfo;
+          return {
+            type: "Feature",
+            properties: {
+              ...country,
+            },
+            geometry: {
+              type: "Point",
+              coordinates: [lng, lat],
+            },
+          };
+        }),
+      };
+      
+      const p = {
+        type: "FeatureCollection",
+        features: provinces.map((elem) => {
+          const { coordinates = {} } = elem;
+          const { latitude: lat, longitude: lng } = coordinates;
+          return {
+            type: "Feature",
+            properties: {
+              ...elem,
+            },
+            geometry: {
+              type: "Point",
+              coordinates: [lng, lat],
+            },
+          };
+        }),
+      };
+      setGeoJsonCountries(c);
+      setGeoJsonProvinces(p);
+    })();
+  }, [ourData]);
+
+
+  console.log(geoJsonCountries);
+  console.log(geoJsonProvinces);
 
   return (
     <div className="mainPageContainer">
@@ -190,7 +273,7 @@ const IndexPage = () => {
       <div className="mainPageModules">
         <div className="tableModule">
           <h2>Confirmed</h2>
-          <BasicTable />
+            <BasicTable data={geoJsonCountries} />
         </div>
 
         <div className="tableModule">
