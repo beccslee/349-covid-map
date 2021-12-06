@@ -139,6 +139,12 @@ img.leaflet-marker-icon {
   background-color: #8a0000;
 }
 
+.icon-marker-tooltip {
+  border: 2px solid white;
+  z-index: 2;
+  width: 18em;
+}
+
 .small-icon-marker {
   background-color: rgba(rgb(134, 19, 187), 0.75);
 }
@@ -149,8 +155,13 @@ img.leaflet-marker-icon {
 
 .small-icon-marker:hover, .small-icon-marker:active {
   background-color: rgba(rgb(79, 0, 116), 0.85);
+  font-size: 0.55rem;
 }
 
 .leaflet-control-attribution {
   display: none;
+}
+
+.icon-marker-tooltip:before {
+  z-index: -1;
 }

@@ -127,10 +127,11 @@ let getCountries;
       
       const geoJsonProvincesLayer = new L.GeoJSON(geoJsonProvinces, {
         pointToLayer: (feature = {}, latlng) => {
-          const { properties = {} } = feature;
-          const { province = '', stats = {}, updatedAt } = properties;
+          const {properties = {}} = feature;
+          const {province = '', stats = {}, updatedAt} = properties;
           let updatedFormatted;
           let casesString;
+          let pStats = null;
           
           casesString = `${stats?.confirmed}`;
           
