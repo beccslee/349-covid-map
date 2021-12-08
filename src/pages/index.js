@@ -18,7 +18,7 @@ const DEFAULT_ZOOM = 2;
  * MapEffect
  * @description This is an example of creating an effect used to zoom in and set a popup on load
  */
-const MapEffect = ({ markerRef  }) => {
+const MapEffect = ({ markerRef }) => {
 
   console.log("map");
   const map = useMap();
@@ -177,7 +177,7 @@ const MapEffect = ({ markerRef  }) => {
 
 const IndexPage = () => {
   const markerRef = useRef();
-  const [totalToggled, setTotalToggled] = useState(false);
+  const [ totalToggle, setTotalToggle ] = useState(false);
   const [ geoJsonCountries, setGeoJsonCountries ] = useState([]);
   // const [ geoJsonProvinces, setGeoJsonProvinces ] = useState([]);
   
@@ -256,15 +256,16 @@ const IndexPage = () => {
       <div className="mainPageModules">
         <div className="tableModule">
           <h2>Confirmed</h2>
-            <BasicTable data={confirmedData} showTotal={totalToggled}/>
+          <BasicTable data={confirmedData} showTotal={totalToggle}/>
         </div>
 
         <div className="tableModule">
           <h2>Active</h2>
-          <BasicTable data={activeData}/>
+          <BasicTable data={activeData} showTotal={totalToggle}/>
         </div>
 
         <div className="testMapContainer">
+        <button onClick={() => setTotalToggle(!totalToggle)}>SWITCH</button>
           <Map {...mapSettings}>
             <MapEffect markerRef={markerRef} />
             <Marker ref={markerRef} position={CENTER} />
@@ -288,13 +289,13 @@ const IndexPage = () => {
         </div>
 
         <div className="tableModule">
-          <h2>Recovered</h2>
-          <BasicTable data={recoveredData}/>
+          <h2>Recovered</h2>  
+          <BasicTable data={recoveredData} showTotal={totalToggle}/>
         </div>
 
         <div className="tableModule">
-          <h2>Deaths</h2>
-          <BasicTable data={deathsData}/>
+          <h2>Deaths</h2>  
+          <BasicTable data={deathsData} showTotal={totalToggle}/>
         </div>
       </div>
     </div>
