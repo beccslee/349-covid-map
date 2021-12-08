@@ -43,7 +43,7 @@ const MapEffect = ({ markerRef }) => {
       const countries = getCountries?.data;
       let provinces = getProvinces?.data;
       provinces = provinces.filter(elem => elem.province);
-      // console.log(provinces);
+      
       const hasData = Array.isArray(countries) && Array.isArray(provinces) && countries.length > 0 && provinces.length > 0;
     
       if (!hasData) return;
@@ -129,10 +129,11 @@ const MapEffect = ({ markerRef }) => {
       
       const geoJsonProvincesLayer = new L.GeoJSON(geoJsonProvinces, {
         pointToLayer: (feature = {}, latlng) => {
-          const { properties = {} } = feature;
-          const { province = '', stats = {}, updatedAt } = properties;
+          const {properties = {}} = feature;
+          const {province = '', stats = {}, updatedAt} = properties;
           let updatedFormatted;
           let casesString;
+          let pStats = null;
           
           casesString = `${stats?.confirmed}`;
           
