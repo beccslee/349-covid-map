@@ -13,9 +13,6 @@ const LOCATION = {
 };
 const CENTER = [LOCATION.lat, LOCATION.lng];
 const DEFAULT_ZOOM = 2;
-// let getCountries;
-// let geoJsonCountries;
-// let geoJsonProvinces;
 
 /**
  * MapEffect
@@ -26,11 +23,11 @@ const MapEffect = ({ markerRef  }) => {
   console.log("map");
   const map = useMap();
   
-  let getCountries;
-  let getProvinces;
-
+  
   useEffect(() => {
     if (!markerRef.current || !map) return;
+    let getCountries;
+    let getProvinces;
     
     (async function run() {
       try {
@@ -86,7 +83,7 @@ const MapEffect = ({ markerRef  }) => {
           };
         }),
       };
-      // console.log(geoJsonCountries); 
+
       const geoJsonCountryLayer = new L.GeoJSON(geoJsonCountries, {
         pointToLayer: (feature = {}, latlng) => {
           const { properties = {} } = feature;
@@ -179,15 +176,10 @@ const MapEffect = ({ markerRef  }) => {
 };
 
 const IndexPage = () => {
-  console.log("index");
   const markerRef = useRef();
-  const [ourData, setOurData] = useState(false);
-
-  let getCountries;
-  let getProvinces;
-  
+  const [totalToggled, setTotalToggled] = useState(false);
   const [ geoJsonCountries, setGeoJsonCountries ] = useState([]);
-  const [ geoJsonProvinces, setGeoJsonProvinces ] = useState([]);
+  // const [ geoJsonProvinces, setGeoJsonProvinces ] = useState([]);
   
   const mapSettings = {
     center: CENTER,
@@ -195,75 +187,66 @@ const IndexPage = () => {
     zoom: DEFAULT_ZOOM,
   };
   
-  console.log("text");
-  console.log(ourData);
-  if (geoJsonCountries?.length > 0 && geoJsonProvinces?.length > 0){
-    setOurData(true);
-    // console.log(getCountries);
-    // console.log(getProvinces);
-  }
   useEffect(() => {
-    (async function run() {
+    // create event handler to listen for toggle clicked - setTotalToggled to true
+    let getCountries;
+    // let getProvinces;
+    const fetchCountries = async() => {
       try {
         getCountries = await axios.get("https://corona.lmao.ninja/v2/countries");
         // API call to get fetch data for provinces in a country
-        getProvinces = await axios.get("https://disease.sh/v3/covid-19/jhucsse");
+        // getProvinces = await axios.get("https://disease.sh/v3/covid-19/jhucsse");
+        const countries = getCountries?.data;
+        // let provinces = getProvinces?.data;
+
+        // provinces = provinces.filter(elem => elem.province);
+        // const hasData = Array.isArray(countries) && Array.isArray(provinces) && countries.length > 0 && provinces.length > 0;
+        const hasData = Array.isArray(countries) && countries.length > 0;
+        
+        if (!hasData) return;
+        
+        setGeoJsonCountries(countries);
       } catch (e) {
         console.log(`failed to fetch countries: ${e.message}`);
         return;
       }
-      
-      const countries = getCountries?.data;
-      let provinces = getProvinces?.data;
-      provinces = provinces.filter(elem => elem.province);
-      // console.log(provinces);
-      const hasData = Array.isArray(countries) && Array.isArray(provinces) && countries.length > 0 && provinces.length > 0;
-      
-      if (!hasData) return;
-      
-      const c = {
-        type: "FeatureCollection",
-        features: countries.map((country = {}) => {
-          const { countryInfo = {} } = country;
-          const { lat, long: lng } = countryInfo;
-          return {
-            type: "Feature",
-            properties: {
-              ...country,
-            },
-            geometry: {
-              type: "Point",
-              coordinates: [lng, lat],
-            },
-          };
-        }),
-      };
-      
-      const p = {
-        type: "FeatureCollection",
-        features: provinces.map((elem) => {
-          const { coordinates = {} } = elem;
-          const { latitude: lat, longitude: lng } = coordinates;
-          return {
-            type: "Feature",
-            properties: {
-              ...elem,
-            },
-            geometry: {
-              type: "Point",
-              coordinates: [lng, lat],
-            },
-          };
-        }),
-      };
-      setGeoJsonCountries(c);
-      setGeoJsonProvinces(p);
-    })();
-  }, [ourData]);
+    }
+    fetchCountries();
+  }, []);
 
+  let confirmedData;
+  let activeData;
+  let recoveredData;
+  let deathsData;
+  if (geoJsonCountries && geoJsonCountries.length > 0) {
+    confirmedData = geoJsonCountries.map((elem) => {
+      return {
+        country: elem.country,
+        value: elem.cases,
+      };
+    });
 
-  console.log(geoJsonCountries);
-  console.log(geoJsonProvinces);
+    activeData = geoJsonCountries.map((elem) => {
+      return {
+        country: elem.country,
+        value: elem.active,
+      };
+    });
+
+    recoveredData = geoJsonCountries.map((elem) => {
+      return {
+        country: elem.country,
+        value: elem.recovered,
+      };
+    });
+  
+    deathsData = geoJsonCountries.map((elem) => {
+      return {
+        country: elem.country,
+        value: elem.deaths,
+      };
+    });
+  }
 
   return (
     <div className="mainPageContainer">
@@ -273,12 +256,12 @@ const IndexPage = () => {
       <div className="mainPageModules">
         <div className="tableModule">
           <h2>Confirmed</h2>
-            <BasicTable data={geoJsonCountries} />
+            <BasicTable data={confirmedData} showTotal={totalToggled}/>
         </div>
 
         <div className="tableModule">
           <h2>Active</h2>
-          <BasicTable />
+          <BasicTable data={activeData}/>
         </div>
 
         <div className="testMapContainer">
@@ -306,12 +289,12 @@ const IndexPage = () => {
 
         <div className="tableModule">
           <h2>Recovered</h2>
-          <BasicTable />
+          <BasicTable data={recoveredData}/>
         </div>
 
         <div className="tableModule">
           <h2>Deaths</h2>
-          <BasicTable />
+          <BasicTable data={deathsData}/>
         </div>
       </div>
     </div>
