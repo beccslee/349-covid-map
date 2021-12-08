@@ -19,35 +19,41 @@ const DEFAULT_ZOOM = 2;
  * @description This is an example of creating an effect used to zoom in and set a popup on load
  */
 const MapEffect = ({ markerRef }) => {
-
   console.log("map");
   const map = useMap();
-  
-  
+
   useEffect(() => {
     if (!markerRef.current || !map) return;
     let getCountries;
     let getProvinces;
-    
+
     (async function run() {
       try {
-        getCountries = await axios.get("https://corona.lmao.ninja/v2/countries");
+        getCountries = await axios.get(
+          "https://corona.lmao.ninja/v2/countries"
+        );
         // API call to get fetch data for provinces in a country
-        getProvinces = await axios.get("https://disease.sh/v3/covid-19/jhucsse");
+        getProvinces = await axios.get(
+          "https://disease.sh/v3/covid-19/jhucsse"
+        );
       } catch (e) {
         console.log(`failed to fetch countries: ${e.message}`);
         return;
       }
-      
+
       // console.log(getProvinces);
       const countries = getCountries?.data;
       let provinces = getProvinces?.data;
-      provinces = provinces.filter(elem => elem.province);
-      
-      const hasData = Array.isArray(countries) && Array.isArray(provinces) && countries.length > 0 && provinces.length > 0;
-    
+      provinces = provinces.filter((elem) => elem.province);
+
+      const hasData =
+        Array.isArray(countries) &&
+        Array.isArray(provinces) &&
+        countries.length > 0 &&
+        provinces.length > 0;
+
       if (!hasData) return;
-      
+
       const geoJsonCountries = {
         type: "FeatureCollection",
         features: countries.map((country = {}) => {
@@ -89,19 +95,19 @@ const MapEffect = ({ markerRef }) => {
           const { properties = {} } = feature;
           let updatedFormatted;
           let casesString;
-          
+
           const { country, updated, cases, deaths, recovered } = properties;
-          
+
           casesString = `${cases}`;
-          
+
           if (cases > 1000) {
             casesString = `${casesString.slice(0, -3)}k+`;
           }
-          
+
           if (updated) {
             updatedFormatted = new Date(updated).toLocaleString();
           }
-          
+
           const html = `
             <span class="icon-marker">
               <span class="icon-marker-tooltip">
@@ -115,8 +121,8 @@ const MapEffect = ({ markerRef }) => {
               </span>
               ${casesString}
             </span>
-          `;      
-          
+          `;
+
           return L.marker(latlng, {
             icon: L.divIcon({
               className: "icon",
@@ -126,25 +132,25 @@ const MapEffect = ({ markerRef }) => {
           });
         },
       });
-      
+
       const geoJsonProvincesLayer = new L.GeoJSON(geoJsonProvinces, {
         pointToLayer: (feature = {}, latlng) => {
-          const {properties = {}} = feature;
-          const {province = '', stats = {}, updatedAt} = properties;
+          const { properties = {} } = feature;
+          const { province = "", stats = {}, updatedAt } = properties;
           let updatedFormatted;
           let casesString;
           let pStats = null;
-          
+
           casesString = `${stats?.confirmed}`;
-          
+
           if (stats?.confirmed > 1000) {
             casesString = `${casesString.slice(0, -3)}k+`;
           }
-          
+
           if (updatedAt) {
             updatedFormatted = new Date(updatedAt).toLocaleString();
           }
-          
+
           const html = `
             <span class="small-icon-marker">
               <span class="icon-marker-tooltip">
@@ -167,34 +173,36 @@ const MapEffect = ({ markerRef }) => {
           });
         },
       });
-      
+
       geoJsonCountryLayer.addTo(map);
       geoJsonProvincesLayer.addTo(map);
     })();
   }, [map, markerRef]);
-  
+
   return null;
 };
 
 const IndexPage = () => {
   const markerRef = useRef();
-  const [ totalToggle, setTotalToggle ] = useState(false);
-  const [ geoJsonCountries, setGeoJsonCountries ] = useState([]);
+  const [totalToggle, setTotalToggle] = useState(false);
+  const [geoJsonCountries, setGeoJsonCountries] = useState([]);
   // const [ geoJsonProvinces, setGeoJsonProvinces ] = useState([]);
-  
+
   const mapSettings = {
     center: CENTER,
     defaultBaseMap: "OpenStreetMap",
     zoom: DEFAULT_ZOOM,
   };
-  
+
   useEffect(() => {
     // create event handler to listen for toggle clicked - setTotalToggled to true
     let getCountries;
     // let getProvinces;
-    const fetchCountries = async() => {
+    const fetchCountries = async () => {
       try {
-        getCountries = await axios.get("https://corona.lmao.ninja/v2/countries");
+        getCountries = await axios.get(
+          "https://corona.lmao.ninja/v2/countries"
+        );
         // API call to get fetch data for provinces in a country
         // getProvinces = await axios.get("https://disease.sh/v3/covid-19/jhucsse");
         const countries = getCountries?.data;
@@ -203,15 +211,15 @@ const IndexPage = () => {
         // provinces = provinces.filter(elem => elem.province);
         // const hasData = Array.isArray(countries) && Array.isArray(provinces) && countries.length > 0 && provinces.length > 0;
         const hasData = Array.isArray(countries) && countries.length > 0;
-        
+
         if (!hasData) return;
-        
+
         setGeoJsonCountries(countries);
       } catch (e) {
         console.log(`failed to fetch countries: ${e.message}`);
         return;
       }
-    }
+    };
     fetchCountries();
   }, []);
 
@@ -240,7 +248,7 @@ const IndexPage = () => {
         value: elem.recovered,
       };
     });
-  
+
     deathsData = geoJsonCountries.map((elem) => {
       return {
         country: elem.country,
@@ -257,46 +265,59 @@ const IndexPage = () => {
       <div className="mainPageModules">
         <div className="tableModule">
           <h2>Confirmed</h2>
-          <BasicTable data={confirmedData} showTotal={totalToggle}/>
+          <BasicTable data={confirmedData} showTotal={totalToggle} />
         </div>
 
         <div className="tableModule">
           <h2>Active</h2>
-          <BasicTable data={activeData} showTotal={totalToggle}/>
+          <BasicTable data={activeData} showTotal={totalToggle} />
         </div>
 
         <div className="testMapContainer">
-        <button onClick={() => setTotalToggle(!totalToggle)}>SWITCH</button>
+          <button onClick={() => setTotalToggle(!totalToggle)}>SWITCH</button>
           <Map {...mapSettings}>
             <MapEffect markerRef={markerRef} />
             <Marker ref={markerRef} position={CENTER} />
           </Map>
-          <div className="graphContainer">
-            <div className="graphModule">
-              <h3>Graph #1</h3>
-              <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.Lorem
-                ipsum dolor sit, amet consectetur adipisicing elit.
-              </p>
-            </div>
-            <div className="graphModule">
-              <h3>Graph #2</h3>
-              <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.Lorem
-                ipsum dolor sit, amet consectetur adipisicing elit.
-              </p>
-            </div>
+        </div>
+
+        <div className="tableModule">
+          <h2>Recovered</h2>
+          <BasicTable data={recoveredData} showTotal={totalToggle} />
+        </div>
+
+        <div className="tableModule">
+          <h2>Deaths</h2>
+          <BasicTable data={deathsData} showTotal={totalToggle} />
+        </div>
+        <div className="graphContainer">
+          <div className="graphModule">
+            <h3>Graph #1</h3>
+            <p>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit.Lorem
+              ipsum dolor sit, amet consectetur adipisicing elit. Lorem ipsum
+              dolor sit, amet consectetur adipisicing elit.Lorem ipsum dolor
+              sit, amet consectetur adipisicing elit.
+            </p>
           </div>
-        </div>
-
-        <div className="tableModule">
-          <h2>Recovered</h2>  
-          <BasicTable data={recoveredData} showTotal={totalToggle}/>
-        </div>
-
-        <div className="tableModule">
-          <h2>Deaths</h2>  
-          <BasicTable data={deathsData} showTotal={totalToggle}/>
+          <div className="graphModule">
+            <h3>Graph #2</h3>
+            <p>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit.Lorem
+              ipsum dolor sit, amet consectetur adipisicing elit. Lorem ipsum
+              dolor sit, amet consectetur adipisicing elit.Lorem ipsum dolor
+              sit, amet consectetur adipisicing elit.
+            </p>
+          </div>
+          <div className="graphModule">
+            <h3>Graph #3</h3>
+            <p>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit.Lorem
+              ipsum dolor sit, amet consectetur adipisicing elit. Lorem ipsum
+              dolor sit, amet consectetur adipisicing elit.Lorem ipsum dolor
+              sit, amet consectetur adipisicing elit.
+            </p>
+          </div>
         </div>
       </div>
     </div>

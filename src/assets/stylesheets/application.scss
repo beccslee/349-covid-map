@@ -15,16 +15,16 @@ body {
 }
 
 .wrapper {
-  min-height: 100vh;
+  min-height: 25vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
 }
 
 main {
-  background: linear-gradient(-45deg, #1d0164, #070042, #000729, #000000);
+  background: linear-gradient(-45deg, #500164, #070042, #000729, #000000);
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
-  height: 100vh;
+  height: 20vh;
 }
 
 .mainPageContainer {
@@ -37,10 +37,17 @@ main {
   justify-content: center;
   font-size: 0.8rem;
   text-align: center;
-  height: 95vh;
+  height: 25vh;
 }
 
-.tableModule, .graphModule {
+.tableModule {
+  border: medium dashed;
+  background: rgba(117, 117, 117, 0.185);
+  margin: 0.4em;
+  border-image: linear-gradient(45deg, turquoise, #5011ec) 1;
+}
+
+.graphModule {
   border: medium dashed;
   background: rgba(117, 117, 117, 0.185);
   margin: 0.4em;
@@ -49,20 +56,19 @@ main {
 
 .testMapContainer {
   margin: 0.5em 0;
-  height: 60%;
+  height: 80%;
   width: 100%;
 }
 
 .mapModule {
-  height: 50%;
+  height: 100%;
 }
 
 .graphContainer {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: 100%;
-  height: 40vh;
+  display: inline-grid;
+  grid-template-columns: 222% 222% 222%;
+  // width: 50em;
+  min-height: 100%;
 }
 
 @keyframes gradient {
