@@ -1,8 +1,9 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import L from "leaflet";
 import { Marker, useMap } from "react-leaflet";
 import Map from "components/Map";
 import Header from "components/Header";
+import BasicTable from "components/BasicTable";
 import axios from "axios";
 import "assets/stylesheets/application.scss";
 
@@ -12,19 +13,21 @@ const LOCATION = {
 };
 const CENTER = [LOCATION.lat, LOCATION.lng];
 const DEFAULT_ZOOM = 2;
-let getCountries;
 
 /**
  * MapEffect
  * @description This is an example of creating an effect used to zoom in and set a popup on load
  */
- const MapEffect = ({ markerRef }) => {
+const MapEffect = ({ markerRef }) => {
+
+  console.log("map");
   const map = useMap();
   
+  
   useEffect(() => {
-    // let getCountries;
-    let getProvinces;
     if (!markerRef.current || !map) return;
+    let getCountries;
+    let getProvinces;
     
     (async function run() {
       try {
@@ -36,14 +39,13 @@ let getCountries;
         return;
       }
       
-      console.log(getProvinces);
+      // console.log(getProvinces);
       const countries = getCountries?.data;
       let provinces = getProvinces?.data;
       provinces = provinces.filter(elem => elem.province);
-      console.log(provinces);
-      console.log(countries);
-      const hasData = Array.isArray(countries) && Array.isArray(provinces) && countries.length > 0 && provinces.length > 0;
       
+      const hasData = Array.isArray(countries) && Array.isArray(provinces) && countries.length > 0 && provinces.length > 0;
+    
       if (!hasData) return;
       
       const geoJsonCountries = {
@@ -63,7 +65,7 @@ let getCountries;
           };
         }),
       };
-      
+
       const geoJsonProvinces = {
         type: "FeatureCollection",
         features: provinces.map((elem) => {
@@ -81,7 +83,7 @@ let getCountries;
           };
         }),
       };
-      
+
       const geoJsonCountryLayer = new L.GeoJSON(geoJsonCountries, {
         pointToLayer: (feature = {}, latlng) => {
           const { properties = {} } = feature;
@@ -113,7 +115,7 @@ let getCountries;
               </span>
               ${casesString}
             </span>
-          `;
+          `;      
           
           return L.marker(latlng, {
             icon: L.divIcon({
@@ -176,12 +178,76 @@ let getCountries;
 
 const IndexPage = () => {
   const markerRef = useRef();
-
+  const [ totalToggle, setTotalToggle ] = useState(false);
+  const [ geoJsonCountries, setGeoJsonCountries ] = useState([]);
+  // const [ geoJsonProvinces, setGeoJsonProvinces ] = useState([]);
+  
   const mapSettings = {
     center: CENTER,
     defaultBaseMap: "OpenStreetMap",
     zoom: DEFAULT_ZOOM,
   };
+  
+  useEffect(() => {
+    // create event handler to listen for toggle clicked - setTotalToggled to true
+    let getCountries;
+    // let getProvinces;
+    const fetchCountries = async() => {
+      try {
+        getCountries = await axios.get("https://corona.lmao.ninja/v2/countries");
+        // API call to get fetch data for provinces in a country
+        // getProvinces = await axios.get("https://disease.sh/v3/covid-19/jhucsse");
+        const countries = getCountries?.data;
+        // let provinces = getProvinces?.data;
+
+        // provinces = provinces.filter(elem => elem.province);
+        // const hasData = Array.isArray(countries) && Array.isArray(provinces) && countries.length > 0 && provinces.length > 0;
+        const hasData = Array.isArray(countries) && countries.length > 0;
+        
+        if (!hasData) return;
+        
+        setGeoJsonCountries(countries);
+      } catch (e) {
+        console.log(`failed to fetch countries: ${e.message}`);
+        return;
+      }
+    }
+    fetchCountries();
+  }, []);
+
+  let confirmedData;
+  let activeData;
+  let recoveredData;
+  let deathsData;
+  if (geoJsonCountries && geoJsonCountries.length > 0) {
+    confirmedData = geoJsonCountries.map((elem) => {
+      return {
+        country: elem.country,
+        value: elem.cases,
+      };
+    });
+
+    activeData = geoJsonCountries.map((elem) => {
+      return {
+        country: elem.country,
+        value: elem.active,
+      };
+    });
+
+    recoveredData = geoJsonCountries.map((elem) => {
+      return {
+        country: elem.country,
+        value: elem.recovered,
+      };
+    });
+  
+    deathsData = geoJsonCountries.map((elem) => {
+      return {
+        country: elem.country,
+        value: elem.deaths,
+      };
+    });
+  }
 
   return (
     <div className="mainPageContainer">
@@ -191,21 +257,16 @@ const IndexPage = () => {
       <div className="mainPageModules">
         <div className="tableModule">
           <h2>Confirmed</h2>
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magnam,
-            illum.
-          </p>
+          <BasicTable data={confirmedData} showTotal={totalToggle}/>
         </div>
 
         <div className="tableModule">
           <h2>Active</h2>
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magnam,
-            illum.
-          </p>
+          <BasicTable data={activeData} showTotal={totalToggle}/>
         </div>
 
         <div className="testMapContainer">
+        <button onClick={() => setTotalToggle(!totalToggle)}>SWITCH</button>
           <Map {...mapSettings}>
             <MapEffect markerRef={markerRef} />
             <Marker ref={markerRef} position={CENTER} />
@@ -229,19 +290,13 @@ const IndexPage = () => {
         </div>
 
         <div className="tableModule">
-          <h2>Recovered</h2>
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magnam,
-            illum.
-          </p>
+          <h2>Recovered</h2>  
+          <BasicTable data={recoveredData} showTotal={totalToggle}/>
         </div>
 
         <div className="tableModule">
-          <h2>Deaths</h2>
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magnam,
-            illum.
-          </p>
+          <h2>Deaths</h2>  
+          <BasicTable data={deathsData} showTotal={totalToggle}/>
         </div>
       </div>
     </div>
