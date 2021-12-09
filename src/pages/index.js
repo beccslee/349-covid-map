@@ -6,9 +6,11 @@ import Header from "components/Header";
 import BasicTable from "components/BasicTable";
 import axios from "axios";
 import "assets/stylesheets/application.scss";
-import BarChart from '../components/BarChart';
-import PieChart from '../components/PieChart';
-import HorizontalBarChart from '../components/HorizontalBarChart';
+import BarChart from "../components/BarChart";
+import PieChart from "../components/PieChart";
+import HorizontalBarChart from "../components/HorizontalBarChart";
+import { FaGlobe } from "react-icons/fa";
+import { FaFlag } from "react-icons/fa";
 
 const LOCATION = {
   lat: 0,
@@ -277,7 +279,20 @@ const IndexPage = () => {
         </div>
 
         <div className="testMapContainer">
-          <button onClick={() => setTotalToggle(!totalToggle)}>SWITCH</button>
+          <input
+            type="checkbox"
+            name="checkbox"
+            id="checkbox"
+            className="checkbox"
+          />
+          <label
+            for="checkbox"
+            className="statsButton"
+            onClick={() => setTotalToggle(!totalToggle)}
+          >
+            <FaGlobe /> <FaFlag />
+            <div className="ball"></div>
+          </label>
           <Map {...mapSettings}>
             <MapEffect markerRef={markerRef} />
             <Marker ref={markerRef} position={CENTER} />
@@ -295,13 +310,18 @@ const IndexPage = () => {
         </div>
         <div className="graphContainer">
           <div className="graphModule">
-            <BarChart confirmed={confirmedData} active={activeData} recovered={recoveredData} deaths={deathsData}/>
+            <BarChart
+              confirmed={confirmedData}
+              active={activeData}
+              recovered={recoveredData}
+              deaths={deathsData}
+            />
           </div>
           <div className="graphModule">
-            <PieChart confirmed={confirmedData}/>
+            <PieChart confirmed={confirmedData} />
           </div>
           <div className="graphModule">
-            <HorizontalBarChart countries={geoJsonCountries}/>
+            <HorizontalBarChart countries={geoJsonCountries} />
           </div>
         </div>
       </div>
