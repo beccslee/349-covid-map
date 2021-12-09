@@ -6,6 +6,9 @@ import Header from "components/Header";
 import BasicTable from "components/BasicTable";
 import axios from "axios";
 import "assets/stylesheets/application.scss";
+import BarChart from '../components/BarChart';
+import PieChart from '../components/PieChart';
+import HorizontalBarChart from '../components/HorizontalBarChart';
 
 const LOCATION = {
   lat: 0,
@@ -292,31 +295,13 @@ const IndexPage = () => {
         </div>
         <div className="graphContainer">
           <div className="graphModule">
-            <h3>Graph #1</h3>
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit.Lorem
-              ipsum dolor sit, amet consectetur adipisicing elit. Lorem ipsum
-              dolor sit, amet consectetur adipisicing elit.Lorem ipsum dolor
-              sit, amet consectetur adipisicing elit.
-            </p>
+            <BarChart confirmed={confirmedData} active={activeData} recovered={recoveredData} deaths={deathsData}/>
           </div>
           <div className="graphModule">
-            <h3>Graph #2</h3>
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit.Lorem
-              ipsum dolor sit, amet consectetur adipisicing elit. Lorem ipsum
-              dolor sit, amet consectetur adipisicing elit.Lorem ipsum dolor
-              sit, amet consectetur adipisicing elit.
-            </p>
+            <PieChart confirmed={confirmedData}/>
           </div>
           <div className="graphModule">
-            <h3>Graph #3</h3>
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit.Lorem
-              ipsum dolor sit, amet consectetur adipisicing elit. Lorem ipsum
-              dolor sit, amet consectetur adipisicing elit.Lorem ipsum dolor
-              sit, amet consectetur adipisicing elit.
-            </p>
+            <HorizontalBarChart countries={geoJsonCountries}/>
           </div>
         </div>
       </div>
