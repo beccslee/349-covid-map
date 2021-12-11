@@ -118,10 +118,10 @@ const MapEffect = ({ markerRef }) => {
               <span class="icon-marker-tooltip">
                 <h2>${country}</h2>
                 <ul>
-                  <li><strong>Confirmed:</strong>${cases}</li>
-                  <li><strong>Deaths:</strong>${deaths}</li>
-                  <li><strong>Recovered:</strong>${recovered}</li>
-                  <li><strong>Update:</strong>${updatedFormatted}</li>
+                  <li><strong>Confirmed: </strong>${cases.toLocaleString()}</li>
+                  <li><strong>Deaths: </strong>${deaths.toLocaleString()}</li>
+                  <li><strong>Recovered: </strong>${recovered.toLocaleString()}</li>
+                  <li><strong>Update: </strong>${updatedFormatted.toLocaleString()}</li>
                 </ul>
               </span>
               ${casesString}
@@ -161,9 +161,9 @@ const MapEffect = ({ markerRef }) => {
               <span class="icon-marker-tooltip">
                 <h2>${province}</h2>
                 <ul>
-                  <li><strong>Confirmed:</strong>${stats?.confirmed}</li>
-                  <li><strong>Deaths:</strong>${stats?.deaths}</li>
-                  <li><strong>Update:</strong>${updatedFormatted}</li>
+                  <li><strong>Confirmed: </strong>${(stats?.confirmed).toLocaleString()}</li>
+                  <li><strong>Deaths: </strong>${(stats?.deaths).toLocaleString()}</li>
+                  <li><strong>Update: </strong>${(updatedFormatted).toLocaleString()}</li>
                 </ul>
               </span>
               ${casesString}

@@ -54,7 +54,7 @@ const BasicTable = (props) => {
               <TableCell className="tableCell" component="th" scope="row">
                 Worldwide Total
               </TableCell>
-              <TableCell align="right">{totalsum}</TableCell>
+              <TableCell align="right">{totalsum.toLocaleString()}</TableCell>
             </TableRow>
           </TableBody>
         ) : (
@@ -71,7 +71,7 @@ const BasicTable = (props) => {
                       {elem.country}
                     </TableCell>
                     <TableCell className="tableCell" align="right">
-                      {elem.value}
+                      {elem.value.toLocaleString()}
                     </TableCell>
                   </TableRow>
                 );
